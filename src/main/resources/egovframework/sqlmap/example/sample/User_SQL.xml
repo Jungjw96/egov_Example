@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- 쿼리문 찾아갈때 namespace -->
+<sqlMap namespace="User">
+
+<typeAlias alias="userVO"
+		type="egovframework.example.sample.service.UserVO" />
+		
+			<resultMap id="user" class="egovframework.example.sample.service.UserVO">
+		<result property="userid" column="userid" />
+		<result property="userpassword" column="userpassword" />
+		<result property="username" column="username" />
+		<result property="usergender" column="usergender" />
+		<result property="useremail" column="useremail"/>
+	</resultMap>
+		
+			<!-- 글 전체 목록 조회 -->
+	<select id="userDAO.selectUserList" resultClass="userVO">
+		SELECT
+		USERID, USERPASSWORD,USERNAME,USERGENDER,USEREMAIL
+		FROM USER1
+		
+	</select>
+	
+<!-- 	글 등록 -->
+<insert id="userDAO.insertUser">
+INSERT INTO USER1 (USERID, USERPASSWORD, USERNAME, USERGENDER, USEREMAIL) VALUES
+(#userid#, #userpassword#, #username#, #usergender#, #useremail# )
+</insert>
+
+<!-- 선택된 이름에 대한 게시글 조회 -->
+<select id = "userDAO.selectUser" resultMap="user">
+<![CDATA[select USERID, USERPASSWORD,USERNAME,USERGENDER,USEREMAIL 
+FROM USER1
+WHERE USERNAME=#username#]]>
+
+</select>
+
+<!-- 글 수정 -->
+<update id = "userDAO.updateUser">
+<![CDATA[UPDATE USER1 SET USERID=#userid#, USERPASSWORD=#userpassword#, 
+USERNAME=#username#, USERGENDER=#usergender#,USEREMAIL=#useremail# 
+WHERE USERID=#userid#]]>
+</update>
+
+<!-- 삭제 -->
+<delete id="userDAO.deleteUser">
+<![CDATA[DELETE FROM USER1
+ WHERE USERNAME=#username#]]>
+</delete>
+
+
+</sqlMap>

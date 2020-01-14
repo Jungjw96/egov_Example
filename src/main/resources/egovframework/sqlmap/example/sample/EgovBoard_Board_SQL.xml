@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- 쿼리문 찾아갈때 namespace -->
+<sqlMap namespace="Board">
+
+
+	<typeAlias alias="searchVO"
+		type="egovframework.example.sample.service.SampleDefaultVO" />
+		<typeAlias alias="boardVO"
+		type="egovframework.example.sample.service.BoardVO" />
+		
+
+	<resultMap id="board" class="egovframework.example.sample.service.BoardVO">
+		<result property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="name" column="name" />
+		<result property="bdate" column="bdate" />
+	</resultMap>
+
+
+	<!-- 글 목록 조회 -->
+	<select id="boardDAO.selectBoardList" parameterClass="searchVO"	resultClass="boardVO">
+		SELECT
+		ID, TITLE, NAME, TO_CHAR(BDATE, 'yyyy-mm-dd') AS BDATE 
+		FROM BOARD
+		WHERE 1=1
+		ORDER BY ID
+		ASC
+	</select>
+
+	<!-- 글 등록 -->
+	<insert id="boardDAO.insertBoard">
+		INSERT INTO BOARD
+		( ID, TITLE, NAME, BDATE) VALUES (
+		#id# , #title#, #name#, #bdate# )
+	</insert>
+
+
+	<!-- 글 수정 -->
+
+	<update id="boardDAO.updateBoard">
+		<![CDATA[
+			UPDATE BOARD
+			SET
+				 TITLE=#title#
+				, NAME=#name#
+				, BDATE=#bdate#
+			WHERE ID=#id#
+		]]>
+	</update>
+
+<!-- id에 대당하는 게시글 조회 -->
+	<select id="boardDAO.selectBoard" resultMap="board">
+        <![CDATA[
+            SELECT
+                ID, TITLE, NAME, TO_CHAR(BDATE, 'yyyy-mm-dd') AS BDATE 
+            FROM BOARD 
+            WHERE ID=#id#
+        ]]>
+	</select>
+	
+
+	<delete id="boardDAO.deleteBoard">
+		<![CDATA[
+			DELETE FROM BOARD 
+			WHERE ID=#id#
+		]]>
+	</delete>
+
+
+
+</sqlMap>
